@@ -2,13 +2,13 @@
 import { useEffect, useState } from "react";
 
 type User = {
-  name: string;
+  nome: string;
   tipo: "empresa" | "colaborador";
 };
 
 type HeaderProps = {
   activeTab?: string;
-  setActiveTab?: (tab: string) => void;
+  setActiveTab?: (tab: 'lancar' | 'visualizar' | 'historico') => void;
   mostrarMeusLances?: boolean;
   setMostrarMeusLances?: (value: boolean) => void;
 };
