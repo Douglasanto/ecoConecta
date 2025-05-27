@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Empresa = {
   id: string;
@@ -14,30 +15,34 @@ export default function Empresas() {
   const [empresas, setEmpresas] = useState<Empresa[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Valida se o item é uma empresa
+  function isEmpresa(user: unknown): user is Empresa {
+    return (
+      typeof user === "object" &&
+      user !== null &&
+      "tipo" in user &&
+      (user as { tipo?: string }).tipo === "empresa"
+    );
+  }
+
   useEffect(() => {
     try {
-      // 1. Obter dados do localStorage com verificação de tipo
       const usuariosJSON = localStorage.getItem("usuarios");
-      
-      // 2. Tratar caso não exista ou seja inválido
+
       if (!usuariosJSON) {
         setEmpresas([]);
         setLoading(false);
         return;
       }
 
-      // 3. Fazer parse seguro
       const usuarios: unknown = JSON.parse(usuariosJSON);
 
-      // 4. Validar a estrutura dos dados
-     (user: unknown): user is Empresa => {
-  return (
-    typeof user === "object" &&
-    user !== null &&
-    "tipo" in user &&
-    (user as { tipo?: string }).tipo === "empresa"
-  );
-};
+      if (Array.isArray(usuarios)) {
+        const empresasFiltradas = usuarios.filter(isEmpresa);
+        setEmpresas(empresasFiltradas);
+      } else {
+        setEmpresas([]);
+      }
     } catch (error) {
       console.error("Erro ao carregar empresas:", error);
       setEmpresas([]);
@@ -69,11 +74,14 @@ export default function Empresas() {
                 className="bg-gray-100 p-6 rounded shadow flex flex-col items-center justify-center"
               >
                 {empresa.logo ? (
-                  <img 
-                    src={empresa.logo} 
-                    alt={`Logo ${empresa.nome}`} 
-                    className="h-16 object-contain"
-                  />
+                  <div className="relative w-24 h-16">
+                    <Image 
+                      src={empresa.logo} 
+                      alt={`Logo ${empresa.nome}`} 
+                      layout="fill"
+                      objectFit="contain"
+                    />
+                  </div>
                 ) : (
                   <div className="h-16 flex items-center justify-center text-gray-500">
                     {empresa.nome}
