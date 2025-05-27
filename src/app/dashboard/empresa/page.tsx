@@ -81,6 +81,18 @@ export default function Empresa() {
     setPopupDetalhesAberto(false);
   }
 
+  function formatarParaReal(valor: string) {
+    const valorNumerico = valor.replace(/\D/g, "");
+    const valorEmCentavos = parseFloat(valorNumerico) / 100;
+
+    if (isNaN(valorEmCentavos)) return "";
+
+    return valorEmCentavos.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  }
+
   function handleDarLance(e: React.FormEvent) {
     e.preventDefault();
     if (!loteSelecionado) return;
@@ -239,11 +251,21 @@ export default function Empresa() {
               value={filtroMaterial}
               onChange={(e) => setFiltroMaterial(e.target.value)}
             >
-              <option value="">Todos</option>
-              <option value="papel">Papel</option>
-              <option value="plástico">Plástico</option>
-              <option value="vidro">Vidro</option>
-              <option value="metal">Metal</option>
+              <option value="" className="text-black">
+                Todos
+              </option>
+              <option value="papel" className="text-black">
+                Papel
+              </option>
+              <option value="plástico" className="text-black">
+                Plástico
+              </option>
+              <option value="vidro" className="text-black">
+                Vidro
+              </option>
+              <option value="metal" className="text-black">
+                Metal
+              </option>
             </select>
           </div>
           <button
@@ -325,7 +347,9 @@ export default function Empresa() {
       {popupDetalhesAberto && loteSelecionado && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded p-6 w-96 max-w-full">
-            <h3 className="text-xl font-semibold mb-4 text-black">Detalhes do Lote</h3>
+            <h3 className="text-xl font-semibold mb-4 text-black">
+              Detalhes do Lote
+            </h3>
             <p className="text-black">
               <strong>Tipo:</strong> {loteSelecionado.tipo}
             </p>
@@ -377,7 +401,9 @@ export default function Empresa() {
             onSubmit={handleDarLance}
             className="bg-white p-6 rounded w-96 max-w-full"
           >
-            <h3 className="text-xl font-semibold mb-4 text-black">Dar Lance no Lote</h3>
+            <h3 className="text-xl font-semibold mb-4 text-black">
+              Dar Lance no Lote
+            </h3>
             <p className="text-black">
               Lote: {loteSelecionado.tipo} {loteSelecionado.qtd} kg
             </p>
@@ -386,8 +412,10 @@ export default function Empresa() {
               <input
                 type="text"
                 value={valorLance}
-                onChange={(e) => setValorLance(e.target.value)}
-                placeholder={`Mínimo: R$ ${loteSelecionado.valorMin.toFixed(
+                onChange={(e) =>
+                  setValorLance(formatarParaReal(e.target.value))
+                }
+                placeholder={`Mínimo: R$ ${loteSelecionado?.valorMin.toFixed(
                   2
                 )}`}
                 className="border p-2 rounded w-full mt-1"

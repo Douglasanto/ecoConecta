@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function CadastroPage() {
   const [showPopup, setShowPopup] = useState(false);
   const router = useRouter();
+  const [tipoUsuario, setTipoUsuario] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,7 +21,8 @@ export default function CadastroPage() {
       telefone: form.telefone.value,
       idade: form.idade.value,
       tipo: form.tipo.value,
-      logo: (form.querySelector('[name="logo"]') as HTMLInputElement)?.value || ''
+      logo:
+        (form.querySelector('[name="logo"]') as HTMLInputElement)?.value || "",
     };
 
     // Salvar no localStorage
@@ -127,6 +129,8 @@ export default function CadastroPage() {
               id="tipo"
               name="tipo"
               required
+              value={tipoUsuario}
+              onChange={(e) => setTipoUsuario(e.target.value)}
               className="w-full mt-1 p-2 border border-gray-300 rounded-md text-black"
             >
               <option value="">Selecione...</option>
@@ -134,14 +138,19 @@ export default function CadastroPage() {
               <option value="colaborador">Colaborador</option>
             </select>
           </div>
-          <label className="block mb-2">
-            <input
-              type="url"
-              name="logo"
-              className="w-full border rounded px-3 py-2 mt-1"
-              placeholder="https://exemplo.com/logo.png"
-            />
-          </label>
+          {tipoUsuario === "empresa" && (
+            <label className="block mb-2 mt-4">
+              <span className="block font-bold text-black">
+                Logo da empresa:
+              </span>
+              <input
+                type="url"
+                name="logo"
+                className="w-full border rounded px-3 py-2 mt-1 text-black"
+                placeholder="https://exemplo.com/logo.png"
+              />
+            </label>
+          )}
           <button
             type="submit"
             className="bg-green-700 text-white font-bold w-full py-2 rounded-md hover:bg-green-800 transition"
@@ -164,7 +173,9 @@ export default function CadastroPage() {
             <h3 className="text-xl font-bold mb-2 text-black">
               Cadastro realizado com sucesso!
             </h3>
-            <p className="mb-4 text-black">Você já pode fazer login com seus dados.</p>
+            <p className="mb-4 text-black">
+              Você já pode fazer login com seus dados.
+            </p>
             <button
               onClick={() => router.push("/login")}
               className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"

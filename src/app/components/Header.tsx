@@ -125,7 +125,7 @@ export default function Header({
               onClick={() => {
                 if (setMostrarMeusLances) {
                   setMostrarMeusLances(!mostrarMeusLances);
-                  console.log("Mostrar Meus Lances:", !mostrarMeusLances); // Para debug
+                  console.log("Mostrar Meus Lances:", !mostrarMeusLances);
                 }
               }}
               className="btn bg-green-700 px-3 py-1 rounded hover:bg-green-800"

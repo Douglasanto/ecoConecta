@@ -30,17 +30,14 @@ export default function Empresas() {
       const usuarios: unknown = JSON.parse(usuariosJSON);
 
       // 4. Validar a estrutura dos dados
-      if (Array.isArray(usuarios)) {
-        const empresasCadastradas = usuarios.filter(
-          (user: any): user is Empresa => 
-            typeof user === "object" && 
-            user !== null && 
-            user.tipo === "empresa"
-        );
-        setEmpresas(empresasCadastradas);
-      } else {
-        setEmpresas([]);
-      }
+     (user: unknown): user is Empresa => {
+  return (
+    typeof user === "object" &&
+    user !== null &&
+    "tipo" in user &&
+    (user as { tipo?: string }).tipo === "empresa"
+  );
+};
     } catch (error) {
       console.error("Erro ao carregar empresas:", error);
       setEmpresas([]);

@@ -220,11 +220,11 @@ export default function Leilao() {
                     onChange={handleChange}
                     className="w-full border rounded px-3 py-2 mt-1"
                   >
-                    <option value="">Selecione...</option>
-                    <option value="papel">Papel</option>
-                    <option value="plástico">Plástico</option>
-                    <option value="vidro">Vidro</option>
-                    <option value="metal">Metal</option>
+                    <option value="" className="text-black">Selecione...</option>
+                    <option value="papel" className="text-black">Papel</option>
+                    <option value="plástico" className="text-black">Plástico</option>
+                    <option value="vidro" className="text-black">Vidro</option>
+                    <option value="metal" className="text-black">Metal</option>
                   </select>
                 </label>
 
